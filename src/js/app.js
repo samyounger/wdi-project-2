@@ -30,9 +30,11 @@ function getBarsForIndex(url) {
 
 function listBars(data) {
   $("main").empty();
-  $.each(data.bars, (i, bar) => {
-    $("main").append(`
-      <h3>${bar.name}</h3>
-    `);
-  });
+  $("main").prepend(
+    `<h2>Bars Listed</h2>`,
+    $.each(data.bars, (i, bar) => {
+      $("main").append(`
+        <h3>${bar.name}</h3>
+      `);
+    }));
 }
