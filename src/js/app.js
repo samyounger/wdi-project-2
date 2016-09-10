@@ -16,7 +16,6 @@ function barsHome(e) {
 
 function barsIndex(e) {
   event.preventDefault();
-  console.log("Hello");
   // Grab url
   let url = $(this).attr("href");
   // Make the ajax request for all the restaurants
@@ -32,12 +31,13 @@ function getBarsForIndex(url) {
 }
 
 function listBars(data) {
-  $('index-container').empty();
+  $('#index-container').empty();
   $.each(data.bars, (i, bar) => {
     $("#index-container").append(`
       <li>${bar.name}</li>
     `);
   });
+  return showContent("index");
 }
 
 function showContent(id) {
