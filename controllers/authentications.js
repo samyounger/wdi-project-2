@@ -3,7 +3,7 @@ module.exports = {
   login:    usersLogin
 };
 
-const User = require("./models/user");
+const User = require("../models/user");
 
 function usersRegister(req, res) {
   User.create(req.body.user, (err, user) => {
