@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const barSchema = new mongoose.Schema({
-  barname:      { type: String, trim: true, required: true },
+  name:      { type: String, trim: true, required: true },
   image:        { type: String, trim: true, required: true },
   url:          { type: String, trim: true, required: true },
   description:  {type: String, trim: true, required: true },
