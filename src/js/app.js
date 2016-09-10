@@ -5,13 +5,11 @@ const api_url = "http://localhost:3000/api";
 function init() {
   $(".home").on("click", barsHome);
   $(".index").on("click", barsIndex);
-
-  // showContent("home");
 }
 
 function barsHome(e) {
   event.preventDefault();
-  showContent("home");
+  $("main").empty();
 }
 
 function barsIndex(e) {
@@ -31,18 +29,10 @@ function getBarsForIndex(url) {
 }
 
 function listBars(data) {
-  $('#index-container').empty();
+  $("main").empty();
   $.each(data.bars, (i, bar) => {
-    $("#index-container").append(`
-      <li>${bar.name}</li>
+    $("main").append(`
+      <h3>${bar.name}</h3>
     `);
   });
-  return showContent("index");
-}
-
-function showContent(id) {
-  //Hide all of the sections
-  $("section").hide();
-  // Show the section that you want to display
-  $(`#${id}-content`).show();
 }
