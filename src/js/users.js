@@ -20,7 +20,7 @@ App.init = function(){
 App.loggedInState = function(){
   $(".loggedOut").hide();
   $(".loggedIn").show();
-  this.usersIndex();
+  // this.usersIndex();
 };
 
 App.loggedOutState = function(){
