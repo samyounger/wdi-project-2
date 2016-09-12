@@ -52,6 +52,7 @@
     "gulp-strip-comments": "^2.4.3",
     "gulp-strip-css-comments": "^1.2.0",
     "gulp-uglify": "^2.0.0",
+    "gulp-wait": "0.0.2",
     "main-bower-files": "^2.13.1"
   }
 }

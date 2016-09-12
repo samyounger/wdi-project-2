@@ -11,13 +11,12 @@ const filter           = require('gulp-filter');              // => selects file
 const flatten          = require('gulp-flatten');             // => brings all files into one directory
 const concat           = require('gulp-concat');              // => compress multiple files into one
 const order            = require('gulp-order');               // => change order of gulp tasks
-const sourcemaps       = require('gulp-sourcemaps');          // => ability to refer back to pre-compiled=
 const cache            = require('gulp-cached');              // => only look at files that have changed
+const wait             = require('gulp-wait');
 const mainBowerFiles   = require('main-bower-files');         // => grab main files for bower
 const del              = require('del');                      // => delete files from directory
-const replace = require('gulp-replace');
-const strip = require('gulp-strip-comments');
-
+const replace          = require('gulp-replace');
+const strip            = require('gulp-strip-comments');
 const bower            = mainBowerFiles({
   "overrides": {
     "bootstrap": {
@@ -45,17 +44,13 @@ gulp.task('bower', [
 gulp.task('bower:js', () => gulp.src(bower)
   .pipe(cache('bower:js'))
   .pipe(filter(['**/*.js']))
-  // .pipe(sourcemaps.init())
   .pipe(concat('_bower.js'))
-  // .pipe(sourcemaps.write())
   .pipe(gulp.dest(`${src}/js`)));
 gulp.task('bower:css', () => gulp.src(bower)
   .pipe(cache('bower:css'))
   .pipe(filter(['**/*.css}']))
-  // .pipe(sourcemaps.init({loadMaps:true}))
   .pipe(concat('_bower.scss'))
   .pipe(stripCssComments())
-  // .pipe(sourcemaps.write())
   .pipe(gulp.dest(`${src}/scss`)));
 gulp.task('bower:fonts', () => gulp.src(bower)
   .pipe(cache('bower:fonts'))
@@ -63,28 +58,27 @@ gulp.task('bower:fonts', () => gulp.src(bower)
   .pipe(flatten())
   .pipe(gulp.dest(`${src}/fonts`)));
 
-
 // nodemon
 gulp.task('nodemon', () => {
   return nodemon({
-    script: 'index.js',
-    // ignore: [
-    //   'public/',
-    //   'src/',
-    // ]
+    script: 'index.js'
+  }).on('readable', () => {
+    this.stdout.on('data', chunk => {
+      if (/^listening/.test(chunk)) {
+        livereload.reload();
+      }
+      process.stdout.write(chunk);
+    });
   });
 });
-
 
 // sass
 gulp.task('sass', () => {
 	return gulp.src(`${src}/**/*.scss`)
     .pipe(cache('sass'))
     .pipe(sass(sass()).on('error', sass.logError))
-    // .pipe(sourcemaps.init())
     .pipe(stripCssComments())
     .pipe(cleanCSS({ compatibility: "ie8"}))
-    // .pipe(sourcemaps.write(''))
     .pipe(flatten())
     .pipe(autoprefixer())
     .pipe(gulp.dest(`${dist}/css`))
@@ -93,8 +87,7 @@ gulp.task('sass', () => {
 
 // scripts & es6
 gulp.task("scripts", () => {
-	return gulp.src(`${src}/**/*.js`)
-    .pipe(cache('scripts'))
+  return gulp.src(`${src}/**/*.js`)
 		.pipe(babel({
 			presets: ["es2015"],
       compact: true,
@@ -109,7 +102,9 @@ gulp.task("scripts", () => {
     ]))
     .pipe(concat('app.js'))
     .pipe(uglify())
-    .pipe(gulp.dest(`${dist}/js`));
+    .pipe(gulp.dest(`${dist}/js`))
+    .pipe(wait(1500))
+    .pipe(livereload());
 });
 
 gulp.task('copy', [
@@ -135,11 +130,17 @@ gulp.task('clean:public', () => {
   ]);
 });
 
+gulp.task('html', () => {
+  return gulp.src('./index.html')
+  .pipe(livereload());
+});
+
 // watch changes
 gulp.task("watch", () => {
 	  livereload.listen();
-    gulp.watch(`${src}/**/*.js, !${src}/js/_bower.js`, ['scripts']);
-	  gulp.watch(`${src}/**/*.scss, !${src}/js/_bower.scss`, ['sass']);
+    gulp.watch('./index.html', ['html']);
+    gulp.watch(`${src}/**/*.js`, ['bower', 'scripts']);
+	  gulp.watch(`${src}/**/*.scss`, ['sass']);
 });
 
 gulp.task("default", [
@@ -148,6 +149,6 @@ gulp.task("default", [
   'sass',
   'copy',
   'scripts',
-  'nodemon',
   'watch',
+  'nodemon'
 ]);
