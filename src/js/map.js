@@ -14,8 +14,8 @@ googleMap.createMarker = function(place) {
       content: `
         <form class="favourites">
           <h3>${place.name}</h3>
-          <img src="${place.photos[0].html_attributions[0]}"
-          <p><strong>Rating:</strong ${place.rating}</p>
+          ${place.photos[0].html_attributions[0]}
+          <p><strong>Rating:</strong> ${place.rating}</p>
           <input type="submit" id="favourite" value="Favourite">
         </form>
       `});
@@ -28,7 +28,7 @@ googleMap.callback = function(results, status) {
   if (status == google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       googleMap.createMarker(results[i]);
-      console.log(results[i]);
+      // console.log(results[i]);
     }
   }
 };
@@ -65,10 +65,15 @@ $(googleMap.mapSetup.bind(googleMap));
 $(init);
 
 function init() {
-  $('button').on("click", googleMap.saveSearch);
+  $('button').on("click", googleMap.saveBar);
+  $(".search").on("click", googleMap.searchLocation);
 }
 
-googleMap.getSearch = function() {
+googleMap.saveBar = function() {
+  event.preventDefault();
+};
+
+googleMap.searchLocation = function() {
   event.preventDefault();
   return $("#searchBox").val();
 };
