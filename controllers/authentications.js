@@ -4,7 +4,7 @@ module.exports = {
 };
 
 const User    = require("../models/user");
-const jwt     = require("jswebtoken");
+const jwt     = require("jsonwebtoken");
 const config  = require("../config/config");
 
 function authenticationsRegister(req, res) {
@@ -26,6 +26,7 @@ function authenticationsLogin(req, res) {
     if(err) return res.status(500).json({ message: "Something went wrong" });
 
     if(!user || !user.validatePassword(req.body.password)) {
+      console.log(err);
       return res.status(401).json({ message: "Unauthorized" });
     }
 

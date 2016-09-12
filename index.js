@@ -22,10 +22,11 @@ app.use("/api", expressJWT({ secret: config.secret })
   .unless({
     path: [
       { url: "/api/register", methods: ["POST"]},
-      { url: "/api/login", methods: ["POST"]}
+      { url: "/api/login",    methods: ["POST"]}
     ]
   }));
-  app.use(jwtErrorHandler);
+
+app.use(jwtErrorHandler);
 
 function jwtErrorHandler(err, req, res, next) {
   if(err.name !== "UnauthorizedError") return next();
