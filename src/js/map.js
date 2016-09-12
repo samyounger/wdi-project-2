@@ -12,9 +12,9 @@ googleMap.mapPlacesDetails = function() {
   document.getElementById('submit').addEventListener('click', function() {
     placeDetailsByPlaceId(service, map, infowindow);
   });
-}
+};
 
-function placeDetailsByPlaceId(service, map, infowindow) {
+googleMap.placeDetailsByPlaceId = function(service, map, infowindow) {
   // Create and send the request to obtain details for a specific place,
   // using its Place ID.
   var request = {

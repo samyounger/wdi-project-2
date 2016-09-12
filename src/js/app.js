@@ -1,40 +1,69 @@
-$(init);
+const App = App || {};
 
-const api_url = "http://localhost:3000/api";
+App.init = function() {
+  this.api_url = "http://localhost:3000/api";
+  $(".home").on("click", this.barsHome);
+  $(".index").on("click", this.barsIndex);
+};
 
-function init() {
-  $(".home").on("click", barsHome);
-  $(".index").on("click", barsIndex);
-}
 
-function barsHome(e) {
+App.barsHome = function(e) {
   event.preventDefault();
   $("main").empty();
-}
+};
 
-function barsIndex(e) {
+App.barsIndex = function(e) {
   event.preventDefault();
   // Grab url
   let url = $(this).attr("href");
   // Make the ajax request for all the restaurants
-  return getBarsForIndex(url);
-}
+  return App.getBarsForIndex(url);
+};
 
-function getBarsForIndex(url) {
+App.getBarsForIndex = function(url) {
   return $.ajax({
     method: "GET",
-    url: `${api_url}${url}`
+    url: `${this.api_url}${url}`,
+    beforeSend: this.setRequestHeader.bind(this)
   })
-  .done(listBars);
-}
+  .done(this.listBars);
+};
 
-function listBars(data) {
+App.listBars = function(data) {
   $("main").empty();
   $("main").prepend(
-    `<h2>Bars Listed</h2>`,
+    `<div class="bars">
+      <h2>Bars Listed</h2>
+    </div>
+  `);
+  $(".bars").prepend(
     $.each(data.bars, (i, bar) => {
-      $("main").append(`
+      $(".bars").append(`
         <h3>${bar.name}</h3>
       `);
     }));
-}
+};
+
+App.ajaxRequest = function(url, method, data, callback){
+  return $.ajax({
+    url,
+    method,
+    data,
+    beforeSend: this.setRequestHeader.bind(this)
+  })
+  .done(callback)
+  .fail(data => {
+    console.log(data);
+  });
+};
+
+App.setRequestHeader = function(xhr, settings) {
+  return xhr.setRequestHeader("Authorization", `Bearer ${this.getToken()}`);
+};
+
+App.getToken = function(){
+  return window.localStorage.getItem("token");
+};
+
+
+$(App.init.bind(App));

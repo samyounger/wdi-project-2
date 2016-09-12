@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ" charset="utf-8"></script>
     <script type="text/javascript" src="./js/app.js"></script>
@@ -17,7 +18,27 @@
         </ul>
       </nav>
     </header>
+
+    <nav class="navbar navbar-light bg-faded">
+        <a class="navbar-brand" href="#">WDI Yearbook</a>
+          <ul>
+            <li>
+              <a class="usersIndex loggedIn" href="#">Users (current)</a>
+            </li>
+            <li>
+              <a class="register loggedOut" href="#">Register</a>
+            </li>
+            <li>
+              <a class="login loggedOut" href="#">Login</a>
+            </li>
+            <li>
+              <a class="logout loggedIn" href="#">Logout</a>
+            </li>
+          </ul>
+    </nav>
+
     <main>
+      <div class="bars"></div>
       <div id="map-canvas"></div>
     </main>
   </body>

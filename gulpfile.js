@@ -78,7 +78,7 @@ gulp.task('nodemon', () => {
 
 // sass
 gulp.task('sass', () => {
-	return gulp.src(`${src}/scss/style.scss`)
+	return gulp.src(`${src}/**/*.scss`)
     .pipe(cache('sass'))
     .pipe(sass(sass()).on('error', sass.logError))
     // .pipe(sourcemaps.init())
