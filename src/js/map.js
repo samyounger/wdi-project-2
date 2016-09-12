@@ -6,9 +6,21 @@ googleMap.createMarker = function(place) {
     map: this.map,
     position: place.geometry.location
   });
+
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent(place.name);
-    infowindow.open(map, this);
+    if(typeof this.infoWindow != "undefined") this.infoWindow.close();
+    this.infoWindow = new google.maps.InfoWindow({
+      map: this.map,
+      content: `
+        <form class="favourites">
+          <h3>${place.name}</h3>
+          <img src="${place.photos[0].html_attributions[0]}"
+          <p><strong>Rating:</strong ${place.rating}</p>
+          <input type="submit" id="favourite" value="Favourite">
+        </form>
+      `});
+    this.infoWindow.open(this.map, marker);
+    this.map.setCenter(marker.getPosition());
   });
 };
 
@@ -37,21 +49,15 @@ googleMap.mapSetup = function() {
   var request = {
     location: newMap,
     radius: '500',
-    query: 'bar'
+    query: 'shoreditch',
+    type: 'bar'
   };
   // *** This is the problem line that stops the map rendering ***
   this.service = new google.maps.places.PlacesService(this.map);
   this.service.textSearch(request, googleMap.callback);
-  // this.service.nearbySearch(request, googleMap.callback);
-  // this.infowindow = new google.maps.InfoWindow();
 };
 
 $(googleMap.mapSetup.bind(googleMap));
-
-
-
-
-
 
 // ***************************************************
 
@@ -59,7 +65,7 @@ $(googleMap.mapSetup.bind(googleMap));
 $(init);
 
 function init() {
-  $('button').on("click", saveSearch);
+  $('button').on("click", googleMap.saveSearch);
 }
 
 googleMap.getSearch = function() {
