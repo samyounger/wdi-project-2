@@ -3,11 +3,8 @@
 }
 
 header {
-  position: fixed;
-  top: 0px;
   width: 100%;
   height: 80px;
-  z-index: 1;
   background: green;
 }
 
@@ -34,12 +31,8 @@ nav {
   }
 }
 
-main {
-  margin-top: 80px;
-}
-
 #map-canvas {
   width: 100%;
-  height: 100vh;
+  height: 88.5vh;
   margin: 0 auto;
 }
