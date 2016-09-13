@@ -1,3 +1,6 @@
+@import 'modal';
+@import 'reset';
+
 * {
   box-sizing: border-box;
 }
@@ -12,6 +15,10 @@ header {
 
 h1 {
   font-size: 40px;
+}
+
+h2 {
+  font-size: 25px;
 }
 
 h3 {
@@ -53,8 +60,8 @@ nav {
 }
 
 #map-canvas {
-  width: 85%;
-  height: 88vh;
+  width: 80%;
+  height: 87vh;
   // margin: 0 auto;
 }
 
@@ -63,13 +70,12 @@ nav {
   width: 300px;
   margin: 10px;
   padding: 10px;
-  font-size: 25px;
-  // background: green;
+  font-size: 20px;
 }
 
 .barNamesContainer {
   float: left;
-  height: 88vh;
-  width: 15%;
-  background: blue;
+  height: 87vh;
+  width: 20%;
+  background: lighten(#813136, 5%);
 }

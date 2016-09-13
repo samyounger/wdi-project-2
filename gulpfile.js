@@ -48,7 +48,7 @@ gulp.task('bower:js', () => gulp.src(bower)
   .pipe(gulp.dest(`${src}/js`)));
 gulp.task('bower:css', () => gulp.src(bower)
   .pipe(cache('bower:css'))
-  .pipe(filter(['**/*.css}']))
+  .pipe(filter(['**/*.css']))
   .pipe(concat('_bower.scss'))
   .pipe(stripCssComments())
   .pipe(gulp.dest(`${src}/scss`)));
@@ -74,7 +74,7 @@ gulp.task('nodemon', () => {
 
 // sass
 gulp.task('sass', () => {
-	return gulp.src(`${src}/**/*.scss`)
+	return gulp.src(`${src}/scss/style.scss`)
     .pipe(cache('sass'))
     .pipe(sass(sass()).on('error', sass.logError))
     .pipe(stripCssComments())

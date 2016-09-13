@@ -9,7 +9,7 @@ App.init = function() {
 
 App.barsHome = function(e) {
   event.preventDefault();
-  $("main").empty();
+  $(".barNamesContainer").empty();
 };
 
 App.barsIndex = function(e) {
@@ -30,15 +30,15 @@ App.getBarsForIndex = function(url) {
 };
 
 App.listBars = function(data) {
-  $("main").empty();
-  $("main").prepend(
+  $(".barNamesContainer").empty();
+  $(".barNamesContainer").prepend(
     `<div class="bars">
-      <h2>Bars Listed</h2>
+      <h2>Favourite Bars</h2>
     </div>
   `);
-  $(".bars").prepend(
+  $(".barNamesContainer").prepend(
     $.each(data.bars, (i, bar) => {
-      $(".bars").append(`
+      $(".barNamesContainer").append(`
         <h3>${bar.name}</h3>
       `);
     }));

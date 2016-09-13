@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/style.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ&libraries=places" charset="utf-8"></script>
     <script type="text/javascript" src="./js/app.js"></script>
@@ -16,17 +15,27 @@
           <li><a class="home" href="#">Home</a></li>
           <li><a class="index" href="/bars">Bars</a></li>
           <li><a class="usersShow loggedIn" href="#">Profile</a></li>
-          <li><a class="register loggedOut" href="#">Register</a></li>
-          <li><a class="login loggedOut" href="#">Login</a></li>
-          <li><a class="logout loggedIn" href="#">Logout</a></li>
         </ul>
       </nav>
     </header>
+    <!-- <a href='#' onclick='overlay()'>Click here to show the overlay</a> -->
     <main>
-      <div class="bars"></div>
     </main>
     <div class="barNamesContainer"></div>
     <input type="text" id="searchBox" placeholder="Enter a place to search">
     <div id="map-canvas"></div>
+    <div id="overlay">
+      <div class="modalBox">
+        <h2 class="modalTitle">Welcome to BarPleeze</h2>
+        <p>The webApp that finds you a nearby bar</p>
+        <ul>
+          <li><a class="register loggedOut" href="#">Register</a></li>
+          <li><a class="login loggedOut" href="#">Login</a></li>
+          <li><a class="logout loggedIn" href="#">Logout</a></li>
+        </ul>
+        <div class="modalForm"></div>
+        <a class="begin" href="#" onclick="overlay()">Begin</a>
+      </div>
+    </div>
   </body>
 </html>

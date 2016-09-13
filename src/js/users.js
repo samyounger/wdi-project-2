@@ -1,14 +1,17 @@
 const App = App || {};
 
+// const modal = require("./modal");
+// modal.overlay();
+
 App.init = function(){
   this.apiUrl = "http://localhost:3000/api";
-  this.$main  = $("main");
+  this.$modal  = $(".modalForm");
 
   $(".register").on("click", this.register.bind(this));
   $(".login").on("click", this.login.bind(this));
   $(".logout").on("click", this.logout.bind(this));
   $(".usersShow").on("click", this.usersShow.bind(this));
-  this.$main.on("submit", "form", this.handleForm);
+  this.$modal.on("submit", "form", this.handleForm);
 
   if (this.getToken()) {
     this.loggedInState();
@@ -31,7 +34,7 @@ App.loggedOutState = function(){
 
 App.register = function() {
   if (event) event.preventDefault();
-  this.$main.html(`
+  this.$modal.html(`
     <h2>Register</h2>
     <form method="post" action="/register">
       <div class="form-group">
@@ -53,7 +56,7 @@ App.register = function() {
 
 App.login = function() {
   event.preventDefault();
-  this.$main.html(`
+  this.$modal.html(`
     <h2>Login</h2>
     <form method="post" action="/login">
       <div class="form-group">
@@ -77,13 +80,13 @@ App.logout = function() {
 //   if (event) event.preventDefault();
 //   let url = `${this.apiUrl}/users`;
 //   return this.ajaxRequest(url, "get", null, (data) => {
-//     this.$main.html(`
+//     this.$modal.html(`
 //       <div class="card-deck-wrapper">
 //         <div class="card-deck">
 //         </div>
 //       </div>
 //     `);
-//     let $container = this.$main.find(".card-deck");
+//     let $container = this.$modal.find(".card-deck");
 //     $.each(data.users, (i, user) => {
 //       $container.append(`
 //         <div class="card col-md-4">
@@ -106,7 +109,10 @@ App.handleForm = function(){
   let data   = $(this).serialize();
 
   return App.ajaxRequest(url, method, data, (data) => {
-    if (data.token) App.setToken(data.token);
+    if (data.token) {
+      App.setToken(data.token);
+      App.setId(data.user._id);
+    }
     App.loggedInState();
   });
 };
@@ -132,8 +138,16 @@ App.setToken = function(token){
   return window.localStorage.setItem("token", token);
 };
 
+App.setId = function(id) {
+  return window.localStorage.setItem("_id", id);
+};
+
 App.getToken = function(){
   return window.localStorage.getItem("token");
+};
+
+App.getId = function() {
+  return window.localStorage.getItem("_id");
 };
 
 App.removeToken = function(){
@@ -150,22 +164,12 @@ $(App.init.bind(App));
 
 App.usersShow = function() {
   event.preventDefault();
-
   $.ajax({
     method: "GET",
-    url: `${this.apiUrl}/users`
+    url: `${this.apiUrl}/users/${App.getId()}`,
+    beforeSend: this.setRequestHeader.bind(this)
   }).done(data => {
     let user = data.user;
-    return console.log(user);
-
-  //   $("#show-content").html(`
-  //     <h2>Name: ${pie.name}</h2>
-  //     <p><img src="${pie.image}"</p>
-  //     <p>Colour: ${pie.colour}</p>
-  //     <p>Weight (lb): ${pie.weight}</p>
-  //     <button class="edit" data-id="${pie._id}">Edit</button>
-  //     <button class="delete" data-id="${pie._id}">Delete</button>
-  //   `);
-  //   return showContent("show");
+    return console.log(data.user);
   });
 };
