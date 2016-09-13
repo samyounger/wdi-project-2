@@ -1,10 +1,74 @@
 const googleMap = googleMap || {};
 
+// *****************************************************
+// googleMap.add_marker = function( $marker, map ) {
+// 	// var
+// 	var latlng = $marker.geometry.location;
+//   // new google.maps.LatLng( $marker.attr('$marker.geometry.location'), $marker.attr('data-lng') );
+//   // console.log(latlng)
+//   googleMap.markers = [];
+//
+//   var image = {
+//     url:        $marker.icon,
+//     size:       new google.maps.Size(71, 71),
+//     origin:     new google.maps.Point(0, 0),
+//     anchor:     new google.maps.Point(17, 34),
+//     scaledSize: new google.maps.Size(25, 25)
+//   };
+//
+//
+// 	// create marker
+// 	var marker = new google.maps.Marker({
+// 		position: latlng,
+// 		map:      map,
+// 		icon:     image
+// 	});
+//
+// 	// add to array
+//   googleMap.markers.push( marker );
+// 	// map.markers.push( marker );
+//
+//   // if marker contains HTML, add it to an infoWindow
+//   // if( $marker.html()) {
+//   // 	// create info window
+//   // 	liTag=$(".barNamesContainer").find("[latlng='" + $marker.attr(laglng) + "']");
+//   // 	// console.log(liTag);
+//   // 	// show info window when marker is clicked
+//   // 	$(liTag).click(function() {
+//   // 		infowindow.setContent($marker.html());
+//   // 		infowindow.open(map, marker);
+//   // 	});
+//   //
+//   // 	google.maps.event.addListener(marker, 'click', function() {
+//   // 		infowindow.setContent($marker.html());
+//   // 		infowindow.open(map, marker);
+//   // 	});
+//   //
+//   // 	// close info window when map is clicked
+//   //   google.maps.event.addListener(map, 'click', function(event) {
+//   //     if (infowindow) {
+//   //         infowindow.close(); }
+// 	//   });
+// 	// }
+// };
+
+// *************************************************************
+
 googleMap.createMarker = function(place) {
+
+  var image = {
+    url: place.icon,
+    size: new google.maps.Size(71, 71),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(17, 34),
+    scaledSize: new google.maps.Size(25, 25)
+  };
+
   var placeLoc = place.geometry.location;
   var marker = new google.maps.Marker({
     map: this.map,
-    position: place.geometry.location
+    position: place.geometry.location,
+    icon: image
   });
   $(".barNamesContainer").append(`<h3>${place.name}</h3>`);
 
@@ -15,7 +79,6 @@ googleMap.createMarker = function(place) {
       content: `
       <form class="favourites">
         <h3>${place.name}</h3>
-        ${place.photos[0].html_attributions[0]}
         <p><strong>Rating:</strong> ${place.rating}</p>
         <input type="submit" id="favourite" value="Favourite">
       </form>`
@@ -123,7 +186,7 @@ googleMap.mapSetup = function() {
     scrollwheel: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     styles:
-    [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#3e3e3e"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#c81b1b"},{"lightness":20},{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#5c676f"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"simplified"},{"color":"#9d9d9d"}]},{"featureType":"road","elementType":"geometry","stylers":[{"visibility":"simplified"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"color":"#55b69f"},{"visibility":"simplified"}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"visibility":"simplified"},{"color":"#747474"}]},{"featureType":"road","elementType":"labels.text","stylers":[{"color":"#ffffff"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"visibility":"simplified"},{"color":"#ffffff"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"visibility":"simplified"},{"color":"#f6f6f6"}]},{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"transit","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"water","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#0f252e"},{"lightness":17}]}]
+    [{"featureType":"landscape","stylers":[{"hue":"#FFBB00"},{"saturation":43.400000000000006},{"lightness":37.599999999999994},{"gamma":1}]},{"featureType":"road.highway","stylers":[{"hue":"#FFC200"},{"saturation":-61.8},{"lightness":45.599999999999994},{"gamma":1}]},{"featureType":"road.arterial","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":51.19999999999999},{"gamma":1}]},{"featureType":"road.local","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":52},{"gamma":1}]},{"featureType":"water","stylers":[{"hue":"#0078FF"},{"saturation":-13.200000000000003},{"lightness":2.4000000000000057},{"gamma":1}]},{"featureType":"poi","stylers":[{"hue":"#00FF6A"},{"saturation":-1.0989010989011234},{"lightness":11.200000000000017},{"gamma":1}]}]
   };
   this.map = new google.maps.Map(canvas, mapOptions);
   googleMap.searchArea();

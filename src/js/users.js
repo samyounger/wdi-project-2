@@ -1,7 +1,6 @@
 const App = App || {};
 
-// const modal = require("./modal");
-// modal.overlay();
+$(App.init);
 
 App.init = function(){
   this.apiUrl = "http://localhost:3000/api";
@@ -49,7 +48,7 @@ App.register = function() {
       <div class="form-group">
         <input class="form-control" type="password" name="user[passwordConfirmation]" placeholder="Password Confirmation">
       </div>
-      <input class="btn btn-primary" type="submit" value="Register">
+      <input type="submit" id="userRegister" value="Register">
     </form>
   `);
 };
@@ -65,7 +64,7 @@ App.login = function() {
       <div class="form-group">
         <input class="form-control" type="password" name="password" placeholder="Password">
       </div>
-      <input class="btn btn-primary" type="submit" value="Login">
+      <input type="submit" id="userLogin" value="Login">
     </form>
   `);
 };
@@ -75,31 +74,6 @@ App.logout = function() {
   this.removeToken();
   this.loggedOutState();
 };
-
-// App.usersIndex = function(){
-//   if (event) event.preventDefault();
-//   let url = `${this.apiUrl}/users`;
-//   return this.ajaxRequest(url, "get", null, (data) => {
-//     this.$modal.html(`
-//       <div class="card-deck-wrapper">
-//         <div class="card-deck">
-//         </div>
-//       </div>
-//     `);
-//     let $container = this.$modal.find(".card-deck");
-//     $.each(data.users, (i, user) => {
-//       $container.append(`
-//         <div class="card col-md-4">
-//          <img class="card-img-top" src="http://fillmurray.com/300/300" alt="Card image cap">
-//          <div class="card-block">
-//            <h4 class="card-title">${user.username}</h4>
-//            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-//            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-//          </div>
-//        </div>`);
-//     });
-//   });
-// };
 
 App.handleForm = function(){
   event.preventDefault();
@@ -156,20 +130,15 @@ App.removeToken = function(){
 
 $(App.init.bind(App));
 
-
-
-
-
-
-
+// Accessing user data
 App.usersShow = function() {
-  event.preventDefault();
   $.ajax({
     method: "GET",
     url: `${this.apiUrl}/users/${App.getId()}`,
     beforeSend: this.setRequestHeader.bind(this)
   }).done(data => {
     let user = data.user;
-    return console.log(data.user);
+    console.log(user.username);
+    return user.username;
   });
 };

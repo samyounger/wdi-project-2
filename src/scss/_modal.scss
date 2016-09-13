@@ -35,16 +35,17 @@ body {
 .form-group {
   width: 200px;
   .form-control {
-    width: 200px;
+    width: 80;
     height: 35px;
     margin: 5px;
-    font-size: 17px;
   }
 }
 
- .register, .login, .logout, .begin {
+ .register, .login, .logout, .begin, #userRegister, #userLogin {
+  font-weight: normal;
+  font-size: 17px;
   width: 80px;
-  height: 30px;
+  height: 35px;
   line-height: 30px;
   background: rgba(129,49,54, 0.7);
   display: inline-block;

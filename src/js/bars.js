@@ -1,12 +1,13 @@
 // Get bar details from ajax request by element ID.
 
-$(init);
+$(start);
 
-function init() {
-  $('.favourites').on("submit", "#favourite", saveDetails);
+function start() {
+  $('#map-canvas').on("submit", ".favourites", saveDetails);
 }
 
 function saveDetails() {
   event.preventDefault();
-  console.log("Clicked");
+  let data   = $(this).serialize();
+  console.log(this);
 }

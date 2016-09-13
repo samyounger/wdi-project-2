@@ -1,6 +1,3 @@
-// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfYnNvbnR5cGUiOiJPYmplY3RJRCIsImlkIjp7InR5cGUiOiJCdWZmZXIiLCJkYXRhIjpbODcsMjE0LDEyMywyNSwxODQsMTM2LDIxOCwxNSwwLDE3NSwyMzMsMF19LCJpYXQiOjE0NzM2NzQwMDksImV4cCI6MTQ3Mzc2MDQwOX0.wDu5jIovv9oFsglhsf-3zIyyARBAVXS0MEO7taFE2lk"
-
-
 module.exports = {
   // index: usersIndex,
   show: usersShow,
@@ -9,13 +6,6 @@ module.exports = {
 };
 
 const User = require("../models/user");
-
-// function usersIndex(req, res) {
-//   User.find((err, users) => {
-//     if(err) return res.status(500).json({ message: "Something went wrong "});
-//     return res.status(200).json({ users });
-//   });
-// }
 
 function usersShow(req, res) {
   User.findById(req.params.id, (err, user) => {
