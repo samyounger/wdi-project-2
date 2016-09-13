@@ -7,7 +7,7 @@ App.init = function(){
   $(".register").on("click", this.register.bind(this));
   $(".login").on("click", this.login.bind(this));
   $(".logout").on("click", this.logout.bind(this));
-  $(".usersIndex").on("click", this.usersIndex.bind(this));
+  $(".usersShow").on("click", this.usersShow.bind(this));
   this.$main.on("submit", "form", this.handleForm);
 
   if (this.getToken()) {
@@ -73,30 +73,30 @@ App.logout = function() {
   this.loggedOutState();
 };
 
-App.usersIndex = function(){
-  if (event) event.preventDefault();
-  let url = `${this.apiUrl}/users`;
-  return this.ajaxRequest(url, "get", null, (data) => {
-    this.$main.html(`
-      <div class="card-deck-wrapper">
-        <div class="card-deck">
-        </div>
-      </div>
-    `);
-    let $container = this.$main.find(".card-deck");
-    $.each(data.users, (i, user) => {
-      $container.append(`
-        <div class="card col-md-4">
-         <img class="card-img-top" src="http://fillmurray.com/300/300" alt="Card image cap">
-         <div class="card-block">
-           <h4 class="card-title">${user.username}</h4>
-           <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-           <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-         </div>
-       </div>`);
-    });
-  });
-};
+// App.usersIndex = function(){
+//   if (event) event.preventDefault();
+//   let url = `${this.apiUrl}/users`;
+//   return this.ajaxRequest(url, "get", null, (data) => {
+//     this.$main.html(`
+//       <div class="card-deck-wrapper">
+//         <div class="card-deck">
+//         </div>
+//       </div>
+//     `);
+//     let $container = this.$main.find(".card-deck");
+//     $.each(data.users, (i, user) => {
+//       $container.append(`
+//         <div class="card col-md-4">
+//          <img class="card-img-top" src="http://fillmurray.com/300/300" alt="Card image cap">
+//          <div class="card-block">
+//            <h4 class="card-title">${user.username}</h4>
+//            <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+//            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+//          </div>
+//        </div>`);
+//     });
+//   });
+// };
 
 App.handleForm = function(){
   event.preventDefault();
@@ -141,3 +141,31 @@ App.removeToken = function(){
 };
 
 $(App.init.bind(App));
+
+
+
+
+
+
+
+App.usersShow = function() {
+  event.preventDefault();
+
+  $.ajax({
+    method: "GET",
+    url: `${this.apiUrl}/users`
+  }).done(data => {
+    let user = data.user;
+    return console.log(user);
+
+  //   $("#show-content").html(`
+  //     <h2>Name: ${pie.name}</h2>
+  //     <p><img src="${pie.image}"</p>
+  //     <p>Colour: ${pie.colour}</p>
+  //     <p>Weight (lb): ${pie.weight}</p>
+  //     <button class="edit" data-id="${pie._id}">Edit</button>
+  //     <button class="delete" data-id="${pie._id}">Delete</button>
+  //   `);
+  //   return showContent("show");
+  });
+};

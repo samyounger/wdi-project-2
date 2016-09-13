@@ -12,8 +12,8 @@ router.route("/login")
   .post(authentications.login);
 
 // User routes
-router.route("/users")
-  .get(users.index);
+// router.route("/users")
+//   .get(users.index);
 router.route("/users/:id")
   .get(users.show)
   .put(users.update)
