@@ -102,7 +102,7 @@
   globals.App.placesSetup = function(mapLocation) {
     var request = {
       location: mapLocation,
-      radius: '50',
+      radius: '1',
       query: 'bar',
       // type: 'bar'
     };
