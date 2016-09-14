@@ -2,3 +2,10 @@
 
 @import "map";
 @import "navigation";
+
+.favourites, .webAddress {
+  width: 200px;
+}
+.review {
+  display: inline-block;
+}
