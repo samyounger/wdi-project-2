@@ -176,6 +176,31 @@
     });
   };
 
+  // geoLocator
+  globals.App.geoLocator = function() {
+    const infoWindow = new google.maps.InfoWindow({
+      map: globals.App.map
+    });
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('You');
+        infoWindow.map.setCenter(pos);
+        globals.App.placesSetup(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, infoWindow.map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, infoWindow.map.getCenter());
+    }
+  };
+
   // Setup the map with the intial starting options
   globals.App.mapSetup = function() {
     $("main").html(`<div class="row">
@@ -197,7 +222,7 @@
     let lng = -0.088369;
     let mapLocation = new google.maps.LatLng(lat,lng);
     let mapOptions = {
-      zoom: 12,
+      zoom: 15,
       center: mapLocation,
       scrollwheel: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -205,11 +230,11 @@
       [{"featureType":"landscape","stylers":[{"hue":"#FFBB00"},{"saturation":43.400000000000006},{"lightness":37.599999999999994},{"gamma":1}]},{"featureType":"road.highway","stylers":[{"hue":"#FFC200"},{"saturation":-61.8},{"lightness":45.599999999999994},{"gamma":1}]},{"featureType":"road.arterial","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":51.19999999999999},{"gamma":1}]},{"featureType":"road.local","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":52},{"gamma":1}]},{"featureType":"water","stylers":[{"hue":"#0078FF"},{"saturation":-13.200000000000003},{"lightness":2.4000000000000057},{"gamma":1}]},{"featureType":"poi","stylers":[{"hue":"#00FF6A"},{"saturation":-1.0989010989011234},{"lightness":11.200000000000017},{"gamma":1}]}]
     };
     this.map = new google.maps.Map(canvas, mapOptions);
-    globals.App.searchArea();
   };
 
   globals.App.initMap = function(){
     globals.App.mapSetup();
+    globals.App.geoLocator();
     $(".home").on("click", globals.App.mapSetup.bind(globals.App));
   };
 
