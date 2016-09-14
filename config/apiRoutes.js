@@ -22,5 +22,7 @@ router.route("/users/:id")
 // Page to show bars listed in the barpleeze database
 router.route("/bars")
   .get(bars.index);
+router.route("/bar/:id")
+  .get(bars.data);
 
 module.exports = router;

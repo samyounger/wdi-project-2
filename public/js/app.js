@@ -12475,61 +12475,30 @@ return globals.App.getBarsForIndex(url);};globals.App.getBarsForIndex=function(u
 // $(globals.App.init.bind(globals.App));
 })(window);
 "use strict";(function(globals){if(!('App'in globals)){globals.App={};}globals.App.init=function(){this.api_url="http://localhost:3000/api";this.navigation();this.initMap();globals.App.initAuth.call(globals.App);};$(globals.App.init.bind(globals.App));})(window);
-'use strict';(function(globals){if(!('App'in globals)){globals.App={};}// *****************************************************
-// globals.App.add_marker = function( $marker, map ) {
-// 	// var
-// 	var latlng = $marker.geometry.location;
-//   // new google.maps.LatLng( $marker.attr('$marker.geometry.location'), $marker.attr('data-lng') );
-//   // console.log(latlng)
-//   globals.App.markers = [];
+"use strict";(function(globals){if(!('App'in globals)){globals.App={};}// *****************************************************
+globals.App.add_marker=function($marker,map){// // var
+// console.log($marker.geometry.location);
+// var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
 //
-//   var image = {
-//     url:        $marker.icon,
-//     size:       new google.maps.Size(71, 71),
-//     origin:     new google.maps.Point(0, 0),
-//     anchor:     new google.maps.Point(17, 34),
-//     scaledSize: new google.maps.Size(25, 25)
-//   };
-//
-//
-// 	// create marker
-// 	var marker = new google.maps.Marker({
-// 		position: latlng,
-// 		map:      map,
-// 		icon:     image
-// 	});
-//
-// 	// add to array
-//   globals.App.markers.push( marker );
-// 	// map.markers.push( marker );
-//
-//   // if marker contains HTML, add it to an infoWindow
-//   // if( $marker.html()) {
-//   // 	// create info window
-//   // 	liTag=$(".barNamesContainer").find("[latlng='" + $marker.attr(laglng) + "']");
-//   // 	// console.log(liTag);
-//   // 	// show info window when marker is clicked
-//   // 	$(liTag).click(function() {
-//   // 		infowindow.setContent($marker.html());
-//   // 		infowindow.open(map, marker);
-//   // 	});
-//   //
-//   // 	google.maps.event.addListener(marker, 'click', function() {
-//   // 		infowindow.setContent($marker.html());
-//   // 		infowindow.open(map, marker);
-//   // 	});
-//   //
-//   // 	// close info window when map is clicked
-//   //   google.maps.event.addListener(map, 'click', function(event) {
-//   //     if (infowindow) {
-//   //         infowindow.close(); }
-// 	//   });
-// 	// }
-// };
-// *************************************************************
-globals.App.createMarker=function(place){var image={url:place.icon,size:new google.maps.Size(71,71),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(17,34),scaledSize:new google.maps.Size(25,25)};var placeLoc=place.geometry.location;var marker=new google.maps.Marker({map:this.map,position:place.geometry.location,icon:image});$(".barNamesContainer").append('<li class="list-group-item">'+place.name+'</li>');google.maps.event.addListener(marker,'click',function(){if(typeof this.infoWindow!="undefined")this.infoWindow.close();this.infoWindow=new google.maps.InfoWindow({map:this.map,content:'\n        <form class="favourites">\n          <h3>'+place.name+'</h3>\n          <p><strong>Rating:</strong> '+place.rating+'</p>\n          <input type="submit" id="favourite" value="Favourite">\n        </form>'});this.infoWindow.open(this.map,marker);this.map.setCenter(marker.getPosition());});};globals.App.callback=function(results,status){$(".barNamesContainer").empty();if(status==google.maps.places.PlacesServiceStatus.OK){for(var i=0;i<results.length;i++){globals.App.createMarker(results[i]);console.log(results[i]);}}};// Places Setup
-globals.App.placesSetup=function(mapLocation){var request={location:mapLocation,radius:'1',query:'bar'};this.service=new google.maps.places.PlacesService(this.map);this.service.textSearch(request,globals.App.callback);};globals.App.searchArea=function(){// Create the search box and link it to the UI element.
-var mapLocation="";var input=document.getElementById('searchBox');var searchBox=new google.maps.places.SearchBox(input);// ***************************** HUH? */
+// // create marker
+// var marker = new google.maps.Marker({
+//   position	: latlng,
+//   map			: map,
+//   icon: '...'
+// });
+// add to array
+// globals.App.map.markers.push( marker );
+// if marker contains HTML, add it to an infoWindow
+if($marker.html()){// create info window
+liTag=$(".barNamesContainer").find("[data-lat='"+$marker.attr('data-lat')+"']");// console.log(liTag);
+// show info window when marker is clicked
+$(liTag).click(function(){infowindow.setContent($marker.html());infowindow.open(map,marker);});google.maps.event.addListener(marker,'click',function(){infowindow.setContent($marker.html());infowindow.open(map,marker);});// close info window when map is clicked
+google.maps.event.addListener(map,'click',function(event){if(infowindow){infowindow.close();}});}};// *************************************************************
+// Remove Markers
+globals.App.removeMarkers=function(){for(var i=0;i<globals.App.markers.length;i++){globals.App.markers[i].setMap(null);console.log("removed marker");}};globals.App.addInfoWindowForBar=function(data,marker){var bar=data.json.result;if(typeof this.infoWindow!="undefined")this.infoWindow.close();this.infoWindow=new google.maps.InfoWindow({map:this.map,content:"\n        <form class=\"favourites\">\n        <h3>"+bar.formatted_address+"</h3>\n        </form>"});this.infoWindow.open(this.map,marker);this.map.setCenter(marker.getPosition());};globals.App.markerListen=function(marker,place){$(".barNamesContainer").append("<li class=\"list-group-item\">"+place.name+"</li>");google.maps.event.addListener(marker,'click',function(){var url="http://localhost:3000/api/bar/"+place.place_id;globals.App.ajaxRequest(url,"get",null,function(data){globals.App.addInfoWindowForBar(data,marker);});});};globals.App.addMarker=function(place){var image={url:place.icon,size:new google.maps.Size(71,71),origin:new google.maps.Point(0,0),anchor:new google.maps.Point(17,34),scaledSize:new google.maps.Size(25,25)};var marker=new google.maps.Marker({map:this.map,position:place.geometry.location,icon:image});globals.App.markers.push(marker);globals.App.markerListen(marker,place);};globals.App.callback=function(results,status){$(".barNamesContainer").empty();if(status==google.maps.places.PlacesServiceStatus.OK){for(var i=0;i<results.length;i++){globals.App.addMarker(results[i]);// console.log(results[i]);
+}}};// Places Setup
+globals.App.placesSetup=function(mapLocation){var request={location:mapLocation,radius:'1',query:'bar'};this.service=new google.maps.places.PlacesService(this.map);this.service.textSearch(request,globals.App.callback);};globals.App.searchBox=function(){// Create the search box and link it to the UI element.
+var mapLocation="";var input=document.getElementById('searchBox');globals.App.removeMarkers();var searchBox=new google.maps.places.SearchBox(input);// ***************************** HUH? */
 // globals.App.map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 // Bias the SearchBox results towards current map's viewport.
 globals.App.map.addListener('bounds_changed',function(){searchBox.setBounds(globals.App.map.getBounds());});var markers=[];// Listen for the event fired when the user selects a prediction and retrieve
@@ -12541,7 +12510,7 @@ markers.push(new google.maps.Marker({map:globals.App.map,icon:icon,title:place.n
 bounds.union(place.geometry.viewport);}else{bounds.extend(place.geometry.location);}mapLocation=place.geometry.location;});globals.App.map.fitBounds(bounds);globals.App.placesSetup(mapLocation);});};// geoLocator
 globals.App.geoLocator=function(){var infoWindow=new google.maps.InfoWindow({map:globals.App.map});if(navigator.geolocation){navigator.geolocation.getCurrentPosition(function(position){var pos={lat:position.coords.latitude,lng:position.coords.longitude};infoWindow.setPosition(pos);infoWindow.setContent('You');infoWindow.map.setCenter(pos);globals.App.placesSetup(pos);},function(){handleLocationError(true,infoWindow,infoWindow.map.getCenter());});}else{// Browser doesn't support Geolocation
 handleLocationError(false,infoWindow,infoWindow.map.getCenter());}};// Setup the map with the intial starting options
-globals.App.mapSetup=function(){$("main").html('<div class="row">\n        <div class="col-md-8">\n          <div id="map-canvas"></div>\n        </div>\n        <div class="col-md-4">\n          <h2>Search for restaurants</h2>\n          <form class="form-horizontal">\n            <div class="form-group">\n              <input type="text" id="searchBox" class="form-control" placeholder="Search">\n            </div>\n          </form>\n          <ul class="list-group barNamesContainer"></ul>\n        </div>\n      </div>');var canvas=document.getElementById('map-canvas');var lat=51.506178;var lng=-0.088369;var mapLocation=new google.maps.LatLng(lat,lng);var mapOptions={zoom:15,center:mapLocation,scrollwheel:false,mapTypeId:google.maps.MapTypeId.ROADMAP,styles:[{"featureType":"landscape","stylers":[{"hue":"#FFBB00"},{"saturation":43.400000000000006},{"lightness":37.599999999999994},{"gamma":1}]},{"featureType":"road.highway","stylers":[{"hue":"#FFC200"},{"saturation":-61.8},{"lightness":45.599999999999994},{"gamma":1}]},{"featureType":"road.arterial","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":51.19999999999999},{"gamma":1}]},{"featureType":"road.local","stylers":[{"hue":"#FF0300"},{"saturation":-100},{"lightness":52},{"gamma":1}]},{"featureType":"water","stylers":[{"hue":"#0078FF"},{"saturation":-13.200000000000003},{"lightness":2.4000000000000057},{"gamma":1}]},{"featureType":"poi","stylers":[{"hue":"#00FF6A"},{"saturation":-1.0989010989011234},{"lightness":11.200000000000017},{"gamma":1}]}]};this.map=new google.maps.Map(canvas,mapOptions);};globals.App.initMap=function(){globals.App.mapSetup();globals.App.geoLocator();$(".home").on("click",globals.App.mapSetup.bind(globals.App));};})(window);
+globals.App.mapSetup=function(){$("main").html("<div class=\"row\">\n      <div class=\"col-md-8\">\n      <div id=\"map-canvas\"></div>\n      </div>\n      <div class=\"col-md-4\">\n      <h2>Search for restaurants</h2>\n      <form class=\"form-horizontal\">\n      <div class=\"form-group\">\n      <input type=\"text\" id=\"searchBox\" class=\"form-control\" placeholder=\"Search\">\n      </div>\n      </form>\n      <ul class=\"list-group barNamesContainer\"></ul>\n      </div>\n      </div>");var canvas=document.getElementById('map-canvas');globals.App.markers=[];var lat=51.506178;var lng=-0.088369;var mapLocation=new google.maps.LatLng(lat,lng);var mapOptions={zoom:15,center:mapLocation,scrollwheel:false,mapTypeId:google.maps.MapTypeId.ROADMAP,styles:[{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.locality","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.neighborhood","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#e9e5dc"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.government","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.government","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.place_of_worship","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.school","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54},{"visibility":"off"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"transit.station.airport","elementType":"labels.text.fill","stylers":[{"visibility":"on"}]},{"featureType":"transit.station.airport","elementType":"labels.icon","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"all","stylers":[{"saturation":43},{"lightness":-11},{"color":"#89cada"}]},{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"}]}]};this.map=new google.maps.Map(canvas,mapOptions);};globals.App.reRunPlaces=function(){globals.App.removeMarkers();var location=globals.App.map.getCenter();globals.App.placesSetup(location);};globals.App.initMap=function(){globals.App.mapSetup();globals.App.geoLocator();globals.App.searchBox();$(".home").on("click",globals.App.mapSetup.bind(globals.App));globals.App.map.addListener("dragend",globals.App.reRunPlaces);};})(window);
 "use strict";(function(globals){if(!('App'in globals)){globals.App={};}globals.App.initAuth=function(){$(".logout").on("click",this.logout.bind(this));// $(".usersShow").on("click", this.usersShow.bind(this));
 this.$modal=$(".modal");this.$modal.on("submit","form",this.handleForm);if(this.getToken()){this.loggedInState();}else{this.loggedOutState();}};globals.App.loggedInState=function(){console.log("LOGGED IN");$(".loggedOut").hide();$(".loggedIn").show();// this.usersIndex();
 };globals.App.loggedOutState=function(){console.log("LOGGED OUT");$(".loggedOut").show();$(".loggedIn").hide();};globals.App.logout=function(){event.preventDefault();this.removeToken();this.loggedOutState();};globals.App.handleForm=function(){event.preventDefault();$($(this).parents(".modal")).modal('hide');var url=""+globals.App.api_url+$(this).attr("action");var method=$(this).attr("method");var data=$(this).serialize();return globals.App.ajaxRequest(url,method,data,function(data){if(data.token){globals.App.setToken(data.token);globals.App.setId(data.user._id);}globals.App.loggedInState();});};globals.App.ajaxRequest=function(url,method,data,callback){return $.ajax({url:url,method:method,data:data,beforeSend:this.setRequestHeader.bind(this)}).done(callback).fail(function(data){console.log(data);});};globals.App.setRequestHeader=function(xhr,settings){return xhr.setRequestHeader("Authorization","Bearer "+this.getToken());};globals.App.setToken=function(token){return window.localStorage.setItem("token",token);};globals.App.setId=function(id){return window.localStorage.setItem("_id",id);};globals.App.getToken=function(){return window.localStorage.getItem("token");};globals.App.getId=function(){return window.localStorage.getItem("_id");};globals.App.removeToken=function(){return window.localStorage.clear();};// Accessing user data
