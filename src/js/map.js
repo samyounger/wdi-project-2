@@ -19,20 +19,36 @@
 
     globals.App.addInfoWindowForBar = function(data, marker) {
       let bar = data.json.result;
+      globals.App.barSelected = {
+        name: bar.name,
+        googlePlaceId: bar.place_id,
+        url:  bar.website,
+        lat:  bar.geometry.location.lat,
+        lng:  bar.geometry.location.lng
+      };
 
       if (typeof this.infoWindow != "undefined") this.infoWindow.close();
-      console.log(data);
       this.infoWindow = new google.maps.InfoWindow({
         map: this.map,
         content: `
         <form class="favourites">
-        <h3>${bar.name}</h3>
-        <img class="barImage" src="https://maps.googleapis.com/maps/api/place/photo?maxheight=150&photoreference=${bar.photos[0].photo_reference}&key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ">
-        <p><strong>Phone:</strong> ${bar.formatted_phone_number}</p>
-        <p class="webAddress"><strong>WebSite:</strong> <a href="${bar.website}">${bar.website}</a></p>
+          <h3>${bar.name}</h3>
+          <div class="imageContainer"></div>
+          <p><strong>Phone:</strong> ${bar.formatted_phone_number}</p>
+          <p class="webAddress"><strong>WebSite:</strong> <a href="${bar.website}">${bar.website}</a></p>
+          <input type="submit" id="favourite" value="Favourite">
         </form>`
       });
-      globals.App.reviewsLoop(bar.reviews);
+
+      if(bar.reviews) {
+        globals.App.reviewsLoop(bar.reviews);
+      }
+
+      if(bar.photos) {
+        $(".imageContainer").append(
+          `<img class="barImage" src="https://maps.googleapis.com/maps/api/place/photo?maxheight=150&photoreference=${bar.photos[0].photo_reference}&key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ">`
+        );
+      }
 
       this.infoWindow.open(this.map, marker);
       this.map.setCenter(marker.getPosition());
@@ -40,7 +56,6 @@
 
 
     globals.App.markerListen = function(marker, place) {
-
       google.maps.event.addListener(marker, 'click', function() {
         let url = `http://localhost:3000/api/bar/${place.place_id}`;
         globals.App.ajaxRequest(url, "get", null, (data) => {

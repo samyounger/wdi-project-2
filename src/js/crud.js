@@ -3,7 +3,7 @@
 
   globals.App.navigation = function() {
     $(".home").on("click", this.barsHome);
-    $(".index").on("click", this.barsIndex);
+    $(".bars").on("click", this.barsIndex);
   };
 
   globals.App.barsHome = function(e) {

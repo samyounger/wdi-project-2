@@ -6,6 +6,7 @@
     this.navigation();
     this.initMap();
     globals.App.initAuth.call(globals.App);
+    globals.App.favourite();
   };
 
   $(globals.App.init.bind(globals.App));

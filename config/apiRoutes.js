@@ -23,6 +23,7 @@ router.route("/users/:id")
 router.route("/bars")
   .get(bars.index);
 router.route("/bar/:id")
-  .get(bars.data);
+  .get(bars.data)
+  .post(bars.create);  // new to save favourite bars
 
 module.exports = router;
