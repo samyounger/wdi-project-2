@@ -1,56 +1,10 @@
 (function(globals){
   if (!('App' in globals)) { globals.App = {}; }
 
-  // *****************************************************
-  globals.App.add_marker = function( $marker, map ) {
-    // // var
-    // console.log($marker.geometry.location);
-    // var latlng = new google.maps.LatLng( $marker.attr('data-lat'), $marker.attr('data-lng') );
-    //
-    // // create marker
-    // var marker = new google.maps.Marker({
-    //   position	: latlng,
-    //   map			: map,
-    //   icon: '...'
-    // });
-
-    // add to array
-    // globals.App.map.markers.push( marker );
-
-    // if marker contains HTML, add it to an infoWindow
-    if( $marker.html() )
-    {
-      // create info window
-
-      liTag=$(".barNamesContainer").find("[data-lat='" + $marker.attr('data-lat') + "']");
-      // console.log(liTag);
-      // show info window when marker is clicked
-      $(liTag).click(function() {
-        infowindow.setContent($marker.html());
-        infowindow.open(map, marker);
-      });
-
-      google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent($marker.html());
-        infowindow.open(map, marker);
-      });
-
-      // close info window when map is clicked
-      google.maps.event.addListener(map, 'click', function(event) {
-        if (infowindow) {
-          infowindow.close(); }
-        });
-
-      }
-    };
-
-    // *************************************************************
-
     // Remove Markers
     globals.App.removeMarkers = function() {
       for (var i = 0; i < globals.App.markers.length; i++) {
         globals.App.markers[i].setMap(null);
-        console.log("removed marker");
       }
     };
 
@@ -86,13 +40,21 @@
 
 
     globals.App.markerListen = function(marker, place) {
-      $(".barNamesContainer").append(`<li class="list-group-item">${place.name}</li>`);
+
       google.maps.event.addListener(marker, 'click', function() {
         let url = `http://localhost:3000/api/bar/${place.place_id}`;
         globals.App.ajaxRequest(url, "get", null, (data) => {
           globals.App.addInfoWindowForBar(data, marker);
         });
       });
+      $(".barNamesContainer").append(`<li class="list-group-item" id="${place.place_id}">${place.name}</li>`);
+      $(`#${place.place_id}`).on("click", marker, function() {
+        let url = `http://localhost:3000/api/bar/${place.place_id}`;
+        globals.App.ajaxRequest(url, "get", null, (data) => {
+          globals.App.addInfoWindowForBar(data, marker);
+        });
+      });
+
     };
 
     globals.App.addMarker = function(place) {
@@ -119,7 +81,6 @@
       if (status == google.maps.places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
           globals.App.addMarker(results[i]);
-          // console.log(results[i]);
         }
       }
     };
@@ -235,19 +196,16 @@
 
     // Setup the map with the intial starting options
     globals.App.mapSetup = function() {
-      $("main").html(`<div class="row">
-      <div class="col-md-8">
-      <div id="map-canvas"></div>
-      </div>
-      <div class="col-md-4">
-      <h2>Search for restaurants</h2>
-      <form class="form-horizontal">
-      <div class="form-group">
-      <input type="text" id="searchBox" class="form-control" placeholder="Search">
-      </div>
-      </form>
-      <ul class="list-group barNamesContainer"></ul>
-      </div>
+      $("main").html(`
+      <div class="row">
+        <div class="col-md-8">
+          <div id="map-canvas"></div>
+        </div>
+        <div class="col-md-4">
+          <h2>Search for restaurants</h2>
+          <input type="text" id="searchBox" class="form-control" placeholder="Search">
+          <ul class="list-group barNamesContainer"></ul>
+        </div>
       </div>`);
       let canvas = document.getElementById('map-canvas');
       globals.App.markers = [];

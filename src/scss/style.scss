@@ -9,3 +9,12 @@
 .review {
   display: inline-block;
 }
+
+.barNamesContainer {
+  height: 400px;
+  overflow: auto;
+}
+#searchBox {
+  border: 1px solid lightblue;
+  margin-bottom: 10px;
+}
