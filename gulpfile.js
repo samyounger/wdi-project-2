@@ -24,9 +24,6 @@ const bower            = mainBowerFiles({
         "dist/css/bootstrap.css",
         "dist/js/bootstrap.js",
       ]
-    },
-    "font-awesome": {
-      "main": "css/font-awesome.css"
     }
   }
 });
@@ -101,7 +98,7 @@ gulp.task("scripts", () => {
       "**/*.js"
     ]))
     .pipe(concat('app.js'))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest(`${dist}/js`))
     .pipe(wait(1500))
     .pipe(livereload());

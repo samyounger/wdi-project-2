@@ -1,144 +1,104 @@
-const App = App || {};
+(function(globals){
+  if (!('App' in globals)) { globals.App = {}; }
 
-$(App.init);
+  globals.App.initAuth = function(){
+    $(".logout").on("click", this.logout.bind(this));
+    // $(".usersShow").on("click", this.usersShow.bind(this));
 
-App.init = function(){
-  this.apiUrl = "http://localhost:3000/api";
-  this.$modal  = $(".modalForm");
+    this.$modal  = $(".modal");
+    this.$modal.on("submit", "form", this.handleForm);
 
-  $(".register").on("click", this.register.bind(this));
-  $(".login").on("click", this.login.bind(this));
-  $(".logout").on("click", this.logout.bind(this));
-  $(".usersShow").on("click", this.usersShow.bind(this));
-  this.$modal.on("submit", "form", this.handleForm);
-
-  if (this.getToken()) {
-    this.loggedInState();
-  } else {
-    this.loggedOutState();
-  }
-};
-
-App.loggedInState = function(){
-  $(".loggedOut").hide();
-  $(".loggedIn").show();
-  // this.usersIndex();
-};
-
-App.loggedOutState = function(){
-  $(".loggedOut").show();
-  $(".loggedIn").hide();
-  this.register();
-};
-
-App.register = function() {
-  if (event) event.preventDefault();
-  this.$modal.html(`
-    <h2>Register</h2>
-    <form method="post" action="/register">
-      <div class="form-group">
-        <input class="form-control" type="text" name="user[username]" placeholder="Username">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="email" name="user[email]" placeholder="Email">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="password" name="user[password]" placeholder="Password">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="password" name="user[passwordConfirmation]" placeholder="Password Confirmation">
-      </div>
-      <input type="submit" id="userRegister" value="Register">
-    </form>
-  `);
-};
-
-App.login = function() {
-  event.preventDefault();
-  this.$modal.html(`
-    <h2>Login</h2>
-    <form method="post" action="/login">
-      <div class="form-group">
-        <input class="form-control" type="email" name="email" placeholder="Email">
-      </div>
-      <div class="form-group">
-        <input class="form-control" type="password" name="password" placeholder="Password">
-      </div>
-      <input type="submit" id="userLogin" value="Login">
-    </form>
-  `);
-};
-
-App.logout = function() {
-  event.preventDefault();
-  this.removeToken();
-  this.loggedOutState();
-};
-
-App.handleForm = function(){
-  event.preventDefault();
-
-  let url    = `${App.apiUrl}${$(this).attr("action")}`;
-  let method = $(this).attr("method");
-  let data   = $(this).serialize();
-
-  return App.ajaxRequest(url, method, data, (data) => {
-    if (data.token) {
-      App.setToken(data.token);
-      App.setId(data.user._id);
+    if (this.getToken()) {
+      this.loggedInState();
+    } else {
+      this.loggedOutState();
     }
-    App.loggedInState();
-  });
-};
+  };
 
-App.ajaxRequest = function(url, method, data, callback){
-  return $.ajax({
-    url,
-    method,
-    data,
-    beforeSend: this.setRequestHeader.bind(this)
-  })
-  .done(callback)
-  .fail(data => {
-    console.log(data);
-  });
-};
+  globals.App.loggedInState = function(){
+    console.log("LOGGED IN")
+    $(".loggedOut").hide();
+    $(".loggedIn").show();
+    // this.usersIndex();
+  };
 
-App.setRequestHeader = function(xhr, settings) {
-  return xhr.setRequestHeader("Authorization", `Bearer ${this.getToken()}`);
-};
+  globals.App.loggedOutState = function(){
+    console.log("LOGGED OUT")
+    $(".loggedOut").show();
+    $(".loggedIn").hide();
+  };
 
-App.setToken = function(token){
-  return window.localStorage.setItem("token", token);
-};
+  globals.App.logout = function() {
+    event.preventDefault();
+    this.removeToken();
+    this.loggedOutState();
+  };
 
-App.setId = function(id) {
-  return window.localStorage.setItem("_id", id);
-};
+  globals.App.handleForm = function(){
+    event.preventDefault();
+    $($(this).parents(".modal")).modal('hide');
 
-App.getToken = function(){
-  return window.localStorage.getItem("token");
-};
+    let url    = `${globals.App.api_url}${$(this).attr("action")}`;
+    let method = $(this).attr("method");
+    let data   = $(this).serialize();
 
-App.getId = function() {
-  return window.localStorage.getItem("_id");
-};
+    return globals.App.ajaxRequest(url, method, data, (data) => {
+      if (data.token) {
+        globals.App.setToken(data.token);
+        globals.App.setId(data.user._id);
+      }
+      globals.App.loggedInState();
+    });
+  };
 
-App.removeToken = function(){
-  return window.localStorage.clear();
-};
+  globals.App.ajaxRequest = function(url, method, data, callback){
+    return $.ajax({
+      url,
+      method,
+      data,
+      beforeSend: this.setRequestHeader.bind(this)
+    })
+    .done(callback)
+    .fail(data => {
+      console.log(data);
+    });
+  };
 
-$(App.init.bind(App));
+  globals.App.setRequestHeader = function(xhr, settings) {
+    return xhr.setRequestHeader("Authorization", `Bearer ${this.getToken()}`);
+  };
 
-// Accessing user data
-App.usersShow = function() {
-  $.ajax({
-    method: "GET",
-    url: `${this.apiUrl}/users/${App.getId()}`,
-    beforeSend: this.setRequestHeader.bind(this)
-  }).done(data => {
-    let user = data.user;
-    console.log(user.username);
-    return user.username;
-  });
-};
+  globals.App.setToken = function(token){
+    return window.localStorage.setItem("token", token);
+  };
+
+  globals.App.setId = function(id) {
+    return window.localStorage.setItem("_id", id);
+  };
+
+  globals.App.getToken = function(){
+    return window.localStorage.getItem("token");
+  };
+
+  globals.App.getId = function() {
+    return window.localStorage.getItem("_id");
+  };
+
+  globals.App.removeToken = function(){
+    return window.localStorage.clear();
+  };
+
+  // Accessing user data
+  // globals.App.usersShow = function() {
+  //   $.ajax({
+  //     method: "GET",
+  //     url: `${this.apiUrl}/users/${App.getId()}`,
+  //     beforeSend: this.setRequestHeader.bind(this)
+  //   }).done(data => {
+  //     let user = data.user;
+  //     console.log(user.username);
+  //     return user.username;
+  //   });
+  // };
+
+})(window);

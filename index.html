@@ -1,29 +1,121 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="./css/style.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ&libraries=places" charset="utf-8"></script>
-    <script type="text/javascript" src="./js/app.js"></script>
-    <title>BarPleeze</title>
-  </head>
-  <body>
-    <header>
-      <h1>BarPleeze</h1>
-      <nav>
-        <ul>
-          <li><a class="home" href="#">Home</a></li>
-          <li><a class="index" href="/bars">Bars</a></li>
-          <li><a class="usersShow loggedIn" href="#">Profile</a></li>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ&libraries=places" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/app.js"></script>
+  <title>BarPleeze</title>
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">BarPleeze</a>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <form class="navbar-form navbar-left">
+          <div class="form-group">
+            <input type="text" id="searchBox" class="form-control" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <!-- Logged in navigation -->
+          <li><a href="#" class="loggedIn">My favourties</a></li>
+          <li class="dropdown loggedIn">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#" class="logout">Logout</a></li>
+            </ul>
+          </li>
+          <!-- Logged out navigation -->
+          <li class="loggedOut"><a href="#" data-toggle="modal" data-target="#loginModal">Login</a></li>
+          <li class="loggedOut"><a href="#" data-toggle="modal" data-target="#registerModal">Register</a></li>
         </ul>
-      </nav>
-    </header>
-    <!-- <a href='#' onclick='overlay()'>Click here to show the overlay</a> -->
-    <main>
-    </main>
-    <div class="barNamesContainer"></div>
-    <input type="text" id="searchBox" placeholder="Enter a place to search">
-    <div id="map-canvas"></div>
-    <div id="overlay"></div>
-  </body>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+
+  <!-- <header>
+    <h1>BarPleeze</h1>
+    <nav>
+      <ul>
+        <li><a class="home" href="#">Home</a></li>
+        <li><a class="index" href="/bars">Bars</a></li>
+        <li><a class="usersShow loggedIn" href="#">Profile</a></li>
+      </ul>
+    </nav>
+  </header> -->
+  <!-- <a href='#' onclick='overlay()'>Click here to show the overlay</a> -->
+  <main class="container">
+  </main>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h2 class="modal-title" id="myModalLabel">Login</h2>
+        </div>
+        <form method="post" action="/login">
+          <div class="modal-body">
+            <div class="form-group">
+              <input class="form-control" type="email" name="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <input class="form-control" type="password" name="password" placeholder="Password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" id="userLogin" class="btn btn-primary" value="Login">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h2 class="modal-title" id="myModalLabel">Register</h2>
+        </div>
+        <form method="post" action="/register">
+          <div class="modal-body">
+              <div class="form-group">
+                <input class="form-control" type="text" name="user[username]" placeholder="Username">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="email" name="user[email]" placeholder="Email">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="password" name="user[password]" placeholder="Password">
+              </div>
+              <div class="form-group">
+                <input class="form-control" type="password" name="user[passwordConfirmation]" placeholder="Password Confirmation">
+              </div>
+          </div>
+          <div class="modal-footer">
+            <input type="submit" id="userRegister" class="btn btn-primary" value="Register">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
