@@ -70,7 +70,7 @@
       position: place.geometry.location,
       icon: image
     });
-    $(".barNamesContainer").append(`<h3>${place.name}</h3>`);
+    $(".barNamesContainer").append(`<li class="list-group-item">${place.name}</li>`);
 
     google.maps.event.addListener(marker, 'click', function() {
       if(typeof this.infoWindow != "undefined") this.infoWindow.close();
@@ -183,7 +183,13 @@
           <div id="map-canvas"></div>
         </div>
         <div class="col-md-4">
-          <div class="barNamesContainer"></div>
+          <h2>Search for restaurants</h2>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <input type="text" id="searchBox" class="form-control" placeholder="Search">
+            </div>
+          </form>
+          <ul class="list-group barNamesContainer"></ul>
         </div>
       </div>`);
     let canvas = document.getElementById('map-canvas');

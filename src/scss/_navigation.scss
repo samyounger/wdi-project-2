@@ -1,0 +1,16 @@
+.navbar {
+  border-radius: 0;
+}
+
+.navbar-default {
+  background: #05b6ff;
+
+  .navbar-brand {
+    font-family: 'Bree Serif', serif;
+    color: white;
+  }
+
+  .navbar-nav>li>a, .navbar-default .navbar-text {
+    color: white;
+  }
+}
