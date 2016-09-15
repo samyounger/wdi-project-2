@@ -18,12 +18,14 @@ router.route("/users/:id")
   .get(users.show)
   .put(users.update)
   .delete(users.delete);
+router.route("/users/:id/bars")
+  .post(bars.create);  // new to save favourite bars
+
 
 // Page to show bars listed in the barpleeze database
 router.route("/bars")
   .get(bars.index);
 router.route("/bar/:id")
-  .get(bars.data)
-  .post(bars.create);  // new to save favourite bars
+  .get(bars.data);
 
 module.exports = router;

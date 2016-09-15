@@ -3,6 +3,8 @@
 
   globals.App.initAuth = function(){
     $(".logout").on("click", this.logout.bind(this));
+    $("#editProfile").on("click", this.edit.bind(this));
+    $("#editModal form").on("submit", this.editUser.bind(this));
     // $(".usersShow").on("click", this.usersShow.bind(this));
 
     this.$modal  = $(".modal");
@@ -13,6 +15,24 @@
     } else {
       this.loggedOutState();
     }
+  };
+
+  globals.App.edit = function() {
+    // Ajax request to get username & email
+    let url = `${this.api_url}/users/${this.getId()}`;
+    return this.ajaxRequest(url, "get", null, (data) => {
+      this.$modal = $("#editModal");
+      this.$modal.find("#editUserName").val(data.user.username);
+      this.$modal.find("#editUserEmail").val(data.user.email);
+    });
+  };
+
+  globals.App.editUser = function(){
+    let data = $(event.target).serialize();
+    let url = `${this.api_url}/users/${this.getId()}`;
+    return this.ajaxRequest(url, "put", data, (data) => {
+      console.log(data);
+    });
   };
 
   globals.App.loggedInState = function(){

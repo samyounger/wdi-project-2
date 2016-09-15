@@ -5,6 +5,7 @@ module.exports = {
 };
 
 const Bar = require("../models/bar.js");
+const User = require("../models/user.js");
 const request = require('request-promise');
 
 function barsIndex(req, res) {
@@ -27,13 +28,35 @@ function barsData(req, res) {
 }
 
 function barsCreate(req, res) {
-  Bar.create(req.body.bar, (err, user) => {
-    if(err) return res.status(500).json({ message: "Something went wrong" });
+  User.findById(req.params.id, (err, user) => {
+    if (err) return res.status(404).json({ message: "No user found." });
 
-    return res.status(201).json({
-      message: `Bar Saved`,
-      user,
-      token
+    Bar.findOne({ name: req.body.bar.name }, (err, bar) => {
+      if (err) return res.status(500).json({ message: "Something went wrong" });
+
+      if (!bar) {
+        Bar.create(req.body.bar, (err, bar) => {
+          if (err) return res.status(500).json({ message: "Something went wrong" });
+          user.bars.addToSet(bar._id);
+
+          user.save((err, user) => {
+            return res.status(201).json({
+              message: `Bar was favourited.`,
+              user,
+            });
+          });
+        });
+      } else {
+        user.bars.addToSet(bar._id);
+
+        user.save((err, user) => {
+          return res.status(201).json({
+            message: `Bar was favourited.`,
+            user,
+          });
+        });
+      }
     });
   });
+
 }

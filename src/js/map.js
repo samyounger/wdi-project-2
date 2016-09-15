@@ -10,8 +10,8 @@
 
   globals.App.reviewsLoop = function(reviews) {
     for (var i = 0; i < reviews.length; i++) {
-      $(".favourites").append(`
-        <p class="review"><strong>${reviews[i].author_name}</strong>   rating => ${reviews[i].rating}</p>
+      $(".infoWindowForm").append(`
+        <p class="review reviewAuthor"><strong>${reviews[i].author_name}</strong>   rating: ${reviews[i].rating}</p>
         <p class="review">${reviews[i].text}</p>
         `);
       }
@@ -31,12 +31,12 @@
       this.infoWindow = new google.maps.InfoWindow({
         map: this.map,
         content: `
-        <form class="favourites">
+        <form class="infoWindowForm">
           <h3>${bar.name}</h3>
           <div class="imageContainer"></div>
           <p><strong>Phone:</strong> ${bar.formatted_phone_number}</p>
           <p class="webAddress"><strong>WebSite:</strong> <a href="${bar.website}">${bar.website}</a></p>
-          <input type="submit" id="favourite" value="Favourite">
+          <input type="submit" id="favouriteButton" value="Favourite">
         </form>`
       });
 
@@ -49,9 +49,9 @@
           `<img class="barImage" src="https://maps.googleapis.com/maps/api/place/photo?maxheight=150&photoreference=${bar.photos[0].photo_reference}&key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ">`
         );
       }
-
       this.infoWindow.open(this.map, marker);
-      this.map.setCenter(marker.getPosition());
+      let markerStart = marker.getPosition();
+      this.map.setCenter(markerStart);
     };
 
 
@@ -72,31 +72,40 @@
 
     };
 
-    globals.App.addMarker = function(place) {
+    globals.App.addMarker = function(place, timeOut) {
+      var markerImage = "/images/barMarker.png";
 
       var image = {
-        url: place.icon,
+        url: markerImage,
         size: new google.maps.Size(71, 71),
         origin: new google.maps.Point(0, 0),
         anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
+        scaledSize: new google.maps.Size(35, 35)
       };
 
       var marker = new google.maps.Marker({
         map: this.map,
         position: place.geometry.location,
-        icon: image
+        icon: image,
+        animation: google.maps.Animation.DROP
       });
       globals.App.markers.push(marker);
       globals.App.markerListen(marker, place);
     };
 
+    globals.App.markerTimeout = function(place, delay) {
+      window.setTimeout(function(){
+        globals.App.addMarker(place);
+      }, delay);
+    };
+
     globals.App.callback = function(results, status) {
       $(".barNamesContainer").empty();
+      var timeoutId;
       if (status == google.maps.places.PlacesServiceStatus.OK) {
-        for (var i = 0; i < results.length; i++) {
-          globals.App.addMarker(results[i]);
-        }
+        $.each(results, (index, bar) => {
+          globals.App.markerTimeout(bar, index * 200);
+        });
       }
     };
 
@@ -207,10 +216,10 @@
         `
         <div class="row mapSearchContainer">
           <div id="map-canvas"></div>
-          <div class="btn-group col-md-3 searchContainer open">
+          <div class="btn-group col-md-3 searchContainer">
             <input type="text" id="searchBox" class="form-control" placeholder="Search">
-            <button type="button" class="btn btn-default col-md-3 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            Action <span class="caret"></span>
+            <button type="button" class="btn btn-default col-md-3 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            List of Bars <span class="caret"></span>
             </button>
             <ul class="dropdown-menu barNamesContainer"></ul>
           </div>
@@ -227,7 +236,7 @@
           scrollwheel: false,
           mapTypeId: google.maps.MapTypeId.ROADMAP,
           styles:
-          [{"featureType":"administrative.province","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.locality","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.neighborhood","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"administrative.land_parcel","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#e9e5dc"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi","elementType":"all","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.government","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.government","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"poi.park","elementType":"labels.text.fill","stylers":[{"visibility":"on"}]},{"featureType":"poi.place_of_worship","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.school","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road","elementType":"all","stylers":[{"visibility":"on"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54},{"visibility":"off"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"transit.station.airport","elementType":"labels.text.fill","stylers":[{"visibility":"on"}]},{"featureType":"transit.station.airport","elementType":"labels.icon","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"all","stylers":[{"saturation":43},{"lightness":-11},{"color":"#89cada"}]},{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"}]}]
+          [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"color":"#000000"},{"lightness":13}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#144b53"},{"lightness":14},{"weight":1.4}]},{"featureType":"landscape","elementType":"all","stylers":[{"color":"#34495e"}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#566777"},{"lightness":5}]},{"featureType":"poi.school","elementType":"labels.icon","stylers":[{"color":"#98acbf"}]},{"featureType":"poi.sports_complex","elementType":"labels.icon","stylers":[{"color":"#7ca2c7"}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#4d5a67"}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#3d5165"},{"lightness":25}]},{"featureType":"road.arterial","elementType":"geometry.fill","stylers":[{"color":"#2e3944"}]},{"featureType":"road.arterial","elementType":"geometry.stroke","stylers":[{"color":"#52606f"},{"lightness":16}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#445d75"}]},{"featureType":"transit","elementType":"all","stylers":[{"color":"#146474"}]},{"featureType":"transit","elementType":"labels.text.fill","stylers":[{"color":"#ffffff"}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"color":"#5a748d"}]},{"featureType":"transit","elementType":"labels.icon","stylers":[{"color":"#5a748d"}]},{"featureType":"water","elementType":"all","stylers":[{"color":"#021019"}]}]
         };
         this.map = new google.maps.Map(canvas, mapOptions);
       };

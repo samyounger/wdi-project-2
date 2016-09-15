@@ -1,45 +1,41 @@
 @import "bower";
 
-@import "map";
-@import "navigation";
+@import "modules/variables";
 
-.favourites, .gm-style-iw {
-  width: 300px;
-  height: 200px;
-  overflow: auto;
-  padding: 0;
-  p a{
-    width: 300px;
-  }
+@import "partials/map";
+@import "partials/navigation";
+@import "partials/markerInfoWindow";
+
+* {
+  box-sizing: border-box;
 }
-.barImage {
-  width: 300px;
-  height: auto;
-  overflow: hidden;
+
+body, h3, p, input {
+  font-family: $font-stack;
 }
+
 .review {
   display: inline-block;
 }
 
 .barNamesContainer {
-  height: 60vh;
+  height: calc(100vh - 50vh);
   overflow: auto;
+  margin: 10px;
+  border: 1px solid $primary-colour;
+  width: 100%;
 }
-#searchBox {
-  border: 1px solid lightblue;
-  margin-bottom: 10px;
-}
-
-#infoWindow {
-  height: 150px;
-  width: 150px;
+#searchBox, .btn {
+  border: 1px solid $primary-colour;
+  margin: 10px;
+  width: 100%;
 }
 
 .navbar {
   margin-bottom: 0;
 }
 .navbar-default {
-  background: #6598CF;
+  background: $primary-colour;
 }
 .logo {
   padding: 0;

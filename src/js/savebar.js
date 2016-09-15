@@ -14,18 +14,19 @@
     event.preventDefault();
     console.log("clicked");
     let method = "POST";
-    let url = `${globals.App.api_url}/bars/${globals.App.getId()}`;
+    let url = `${globals.App.api_url}/users/${globals.App.getId()}/bars`;
     let data = globals.App.barSelected;
-
+    // console.log(this)
     return $.ajax({
       method: method,
       url: url,
-      data: data,
-      beforeSend: globals.App.setRequestHeader.bind(this)
+      data: { bar: data },
+      beforeSend: globals.App.setRequestHeader.bind(globals.App)
     }).done(data => {
+      console.log(data)
       return getBarsIndex("/bars");
     }).fail(data => {
-          console.log(data);
+      console.log(data);
     });
   };
 

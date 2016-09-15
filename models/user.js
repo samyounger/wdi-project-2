@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   username:         { type: String, trim: true, required: true },
   email:            { type: String, trim: true, required: true },
   passwordHash:     { type: String, trim: true, required: true },
+  bars:             [{ type: mongoose.Schema.Types.ObjectId, ref: "Bar" }]
 },{
   timestamps: true
 });

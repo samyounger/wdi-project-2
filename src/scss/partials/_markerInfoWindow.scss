@@ -1,0 +1,32 @@
+#infoWindow {
+  height: 200px;
+  width: 200px;
+}
+
+.barImage {
+  width: 300px;
+  height: auto;
+  overflow: hidden;
+}
+
+#favouriteButton {
+  background: $primary-colour;
+  display: block;
+  margin: 10px 0;
+}
+
+.infoWindowForm {
+  width: 300px;
+  height: 200px;
+  overflow: auto;
+  padding: 0;
+  p a{
+    width: 300px;
+  }
+}
+
+.reviewAuthor {
+  border-top: 1px dashed lighten($primary-colour,15%);
+  width: 100%;
+  padding: 10px 0 0;
+}
