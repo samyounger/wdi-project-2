@@ -49,6 +49,11 @@
           `<img class="barImage" src="https://maps.googleapis.com/maps/api/place/photo?maxheight=150&photoreference=${bar.photos[0].photo_reference}&key=AIzaSyByvlUTw9rHtlxIbic2gCVdhpj-8dK7sTQ">`
         );
       }
+
+      google.maps.event.addListener(globals.App.map, "click", function(event) {
+        globals.App.infoWindow.close();
+      });
+
       this.infoWindow.open(this.map, marker);
       let markerStart = marker.getPosition();
       this.map.setCenter(markerStart);
@@ -69,7 +74,6 @@
           globals.App.addInfoWindowForBar(data, marker);
         });
       });
-
     };
 
     globals.App.addMarker = function(place, timeOut) {
