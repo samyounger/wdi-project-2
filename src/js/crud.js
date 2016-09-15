@@ -36,7 +36,7 @@
     $(".barNamesContainer").empty();
     $(".barNamesContainer").prepend(
       `<div class="bars">
-        <h2>Favourite Bars</h2>
+        <h2 class="favouriteBarsTitle">Favourite Bars</h2>
       </div>
     `);
     $(".barNamesContainer").prepend(
@@ -51,7 +51,7 @@
     $(".barNamesContainer").empty();
     $(".barNamesContainer").prepend(
       `<div class="bars">
-        <h2>Favourite Bars</h2>
+        <h2 class="favouriteBarsTitle">Favourite Bars</h2>
       </div>
     `);
     $(".barNamesContainer").prepend(

@@ -5,6 +5,9 @@
 @import "partials/map";
 @import "partials/navigation";
 @import "partials/markerInfoWindow";
+@import "partials/buttonShake";
+@import "partials/searchBox";
+@import "partials/modal";
 
 * {
   box-sizing: border-box;
@@ -12,48 +15,4 @@
 
 body, h3, p, input {
   font-family: $font-stack;
-}
-
-.review {
-  display: inline-block;
-}
-
-.barNamesContainer {
-  height: calc(100vh - 50vh);
-  overflow: auto;
-  margin: 10px;
-  border: 1px solid $primary-colour;
-  width: 100%;
-}
-#searchBox, .btn {
-  border: 1px solid $primary-colour;
-  margin: 10px;
-  width: 100%;
-}
-
-.navbar {
-  margin-bottom: 0;
-}
-.navbar-default {
-  background: $primary-colour;
-}
-.logo {
-  padding: 0;
-}
-.brandName {
-  font-size: 30px;
-}
-
-#logo {
-  height: 50px;
-}
-
-.mapSearchContainer {
-  position: relative;
-}
-
-.searchContainer {
-  position: absolute;
-  top: 0;
-  right: 0;
 }

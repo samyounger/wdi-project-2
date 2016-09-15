@@ -11,7 +11,7 @@
   globals.App.reviewsLoop = function(reviews) {
     for (var i = 0; i < reviews.length; i++) {
       $(".infoWindowForm").append(`
-        <p class="review reviewAuthor"><strong>${reviews[i].author_name}</strong>   rating: ${reviews[i].rating}</p>
+        <p class="review reviewAuthor"><strong>${reviews[i].author_name}</strong> | bar rating : ${reviews[i].rating}</p>
         <p class="review">${reviews[i].text}</p>
         `);
       }

@@ -1,6 +1,11 @@
-#infoWindow {
-  height: 200px;
-  width: 200px;
+.infoWindowForm {
+  width: 300px;
+  height: 350px;
+  overflow: auto;
+  padding: 0;
+  p a{
+    width: 300px;
+  }
 }
 
 .barImage {
@@ -28,18 +33,12 @@
   }
 }
 
-.infoWindowForm {
-  width: 300px;
-  height: 200px;
-  overflow: auto;
-  padding: 0;
-  p a{
-    width: 300px;
-  }
-}
-
 .reviewAuthor {
   border-top: 1px dashed lighten($primary-colour,15%);
   width: 100%;
   padding: 10px 0 0;
+}
+
+.review {
+  display: inline-block;
 }
