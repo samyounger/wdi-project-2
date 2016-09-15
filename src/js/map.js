@@ -54,9 +54,11 @@
         globals.App.infoWindow.close();
       });
 
-      this.infoWindow.open(this.map, marker);
-      let markerStart = marker.getPosition();
-      this.map.setCenter(markerStart);
+      globals.App.infoWindow.open(this.map, marker);
+      window.setTimeout(function(){
+        globals.App.map.setCenter(marker.getPosition());
+        globals.App.map.panBy(0,-180);
+      }, 100);
     };
 
 
@@ -246,17 +248,20 @@
       };
 
       globals.App.reRunPlaces = function() {
-        globals.App.removeMarkers();
+        // globals.App.removeMarkers();
         let location = globals.App.map.getCenter();
         globals.App.placesSetup(location);
       };
 
-      globals.App.initMap = function(){
+      globals.App.mapStart = function(){
+        $(".home").on("click", globals.App.initMap);
+      };
+
+      globals.App.initMap = function() {
         globals.App.mapSetup();
         globals.App.geoLocator();
         globals.App.searchBox();
-        $(".home").on("click", globals.App.mapSetup.bind(globals.App));
         globals.App.map.addListener("dragend", globals.App.reRunPlaces);
+        globals.App.mapStart();
       };
-
     })(window);
