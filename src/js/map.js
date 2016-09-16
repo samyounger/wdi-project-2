@@ -64,14 +64,14 @@
 
     globals.App.markerListen = function(marker, place) {
       google.maps.event.addListener(marker, 'click', function() {
-        let url = `http://localhost:3000/api/bar/${place.place_id}`;
+        let url = `${globals.App.api_url}/bar/${place.place_id}`;
         globals.App.ajaxRequest(url, "get", null, (data) => {
           globals.App.addInfoWindowForBar(data, marker);
         });
       });
       $(".barNamesContainer").append(`<li class="list-group-item" id="${place.place_id}"><a href="#">${place.name}</a></li>`);
       $(`#${place.place_id}`).on("click", marker, function() {
-        let url = `http://localhost:3000/api/bar/${place.place_id}`;
+        let url = `${globals.App.api_url}/bar/${place.place_id}`;
         globals.App.ajaxRequest(url, "get", null, (data) => {
           globals.App.addInfoWindowForBar(data, marker);
         });
