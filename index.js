@@ -6,11 +6,12 @@ const cors        = require("cors");
 const expressJWT  = require("express-jwt");
 
 const app       = express();
+const environment = app.get('env');
 const config    = require("./config/config");
 const apiRouter = require("./config/apiRoutes");
 const webRouter = require("./config/webRoutes");
 
-mongoose.connect(config.db);
+mongoose.connect(config.db[environment]);
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -37,3 +38,5 @@ app.use("/", webRouter);
 app.use("/api", apiRouter);
 
 app.listen(config.port, () => console.log(`The app is set up on: ${config.port}`));
+
+module.exports = app;

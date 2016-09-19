@@ -1,9 +1,21 @@
-# wdi-project-2
+# General Assembly: wdi-project-2
 ====
 
-##BarPleeze: A GoogleMaps website integrating another data API - Twitter
+##BarPleeze: A GoogleMaps website integrating another data API
 
-### Assignment
+<https://github.com/samyounger/wdi-project-2> | <http://barpleeze.herokuapp.com/>
+
+####Contact me
+>LinkedIn: <https://uk.linkedin.com/in/sam-younger-21674714>
+
+>Twitter: <https://twitter.com/aYoungerSage>
+
+>Git: <https://github.com/samyounger>
+
+>Email: <sam.younger@gmail.com>
+
+
+## Assignment
 **Description:** Design a website which uses google maps to display location and information using a secondary data source. The site should provide authentication for users.
 
 ### Chosen topic
@@ -13,7 +25,7 @@ The map is restricted to London only.
 
 ---
 
-### User experience
+### Initial User experience planning
 1. The homepage is blank with a title & description
 2. The user registers with:
 	* Username
@@ -56,7 +68,7 @@ The map is restricted to London only.
 	* Transit layer: [Link] (https://developers.google.com/maps/documentation/javascript/trafficlayer)
 3. **Twitter API:** [Link] (https://dev.twitter.com/rest/public)
 	* The Search API: Tweets by place [Link] (https://dev.twitter.com/rest/public/search-by-place)
-		- You can search for Tweets about places using the place operator of the Search API. 
+		- You can search for Tweets about places using the place operator of the Search API.
 	* Get trends/closest [Link] (https://dev.twitter.com/rest/reference/get/trends/closest)
 		- Returns the locations that Twitter has trending topic information for, closest to a specified location.
 4. **TFL:** If time is left, integrate the TFL library for London.
@@ -64,22 +76,13 @@ The map is restricted to London only.
 
 ---
 
-###Colour Theme
+###Styling
 
-The website should have a light theme so it can be viewed during the daytime on mobile devices.
+Colour Palette: #6598CF;
 
-Given the use of twitter, a blend of twitter blue, google multi-colours.
+- use SASS darken/lighten to change variations of the primarliy colour
 
-Colour Palette:
-
-![Colour Palette](images/color-palette.png "Image of the color palette")
-
-Fonts: font-family: 'Cormorant Infant', serif;
-![Font Sample](images/font-sample.png "Font example")
-
-```
-<link href="https://fonts.googleapis.com/css?family=Cormorant+Infant:500,500i,700" rel="stylesheet">
-```
+Fonts: font-family: 'Fontdiner Swanky', cursive;
 
 ---
 
@@ -108,3 +111,90 @@ Fonts: font-family: 'Cormorant Infant', serif;
 **Favourites**
 
 - The user has the ability to favourite a bar. This saves all the details to their profile for later reference
+
+---
+
+###WireFrame
+
+The project wireframe was designed using the application Sketch.
+
+![Sketch wireframe](preparation-docs/landingPage-sketch.png)
+![Sketch wireframe](preparation-docs/homePage-sketch.png)
+
+---
+
+##Starting the APP
+
+Languages used:
+
+- HTML
+- CSS/SASS
+- Bootstrap
+- Javascript
+- JQuery
+- ExpessJS
+- NodeJS
+- AJAX
+- MongoDB
+- JWT Authentication
+- Bower & Gulp
+
+The app has been uploaded to Heroku here:
+
+<http://barpleeze.herokuapp.com>
+
+###Use it locally:
+
+1. Install Mongo onto your local machine using NPM
+2. Type `mongod` into the console to activate the mongo database
+3. Ensure node package manager (npm) is installed locally on your machine.
+4. In the console navigate to the root of where the file is saved.
+5. In a new terminal window type `npm i`. This installs all required packages.
+6. Type `bower i` to install any language packages required such as jQuery & bootstrap.
+	- you may need to install Bower globally on your local machine, type `npm i bower -g` into the console to do this.
+7. In the terminal type `gulp`. This will launch the app on `http://localhost:3000/app`.
+8. In the brower go to the above address to view the app.
+9. To enable access to the info-Windows when clicking the bar icons on the map, you must register and login.
+
+---
+
+##Outcome
+
+###Review of the project
+
+I achieved most of the functionality that I set out to achieve. The user is able to:
+- register and login/logout
+- scroll through google maps
+- use google places to search any area in the world for nearby bars
+- use a search bar to search geographical areas
+- get an info window up on bars selected giving a photo, url, user reviews of the bar, and a favourites button
+- the favourites button saves bars to the users database to be recalled later
+- a button to recall all the users favourite bars
+- a button to recall all bars favourited across all users
+- a list on the right of the screen which lists all the bars visible, and they can be clicked to open the infoWindow of that bar
+
+###Name Change
+
+After testing the name out with the class, the play on the word 'vernacular' was not immediately obvious, and it was therefore changed to a more direct name 'BarPleeze'.
+
+###Functionalities not achieved 
+
+I did not use the google directions functionality as it only covered foot or vehicle directions, and I did not think this would enhance the UX particularly.
+
+I decided not to limit the bar recommendations to 5, to make it more interesting.
+
+The Twitter API required OAuth which I have not used before. It took me longer than expected to get the google places API functionality to work, which ate into the twitter dev time. I therefore spent the remaining time of the project focusing on styling to ensure a nice user experience.
+
+Likewise there was not time to use the TFL API.
+
+###Styling
+The final styling of the project is quite different from the wire-frame, but the broad layout is the same. The primary colour of the project was changed, for no particular reason other than I preferred the blue selected.
+The styling was primarily done using Bootstrap. Foundation was attempted however it has recently been updated and there was clash between bower, jquery and foundation, which required an older version of jquery. Given at that point I had already coded the functionity, there was no point using an old version of jquery.
+
+##Follow up
+
+**API's:** Using third-party API's was harder than expected and took longer than expected. Next project spend more time experimenting with the API's in the planning phase using Insomnia (`https://insomnia.rest/`)
+
+**RESTful Routes:** Integrating user authentication into the project made it harder to loop through the RESTful routes. This particular part highlighted to me that I need a greatinger understanding REST routing, connecting the front-end App with the back-end API.
+
+**Styling Frameworks:** I have not used styling frameworks before to any great extent, so this was the first project used properly. I wasted quite a bit of time styling the site using SASS, in particular integrating a modal. Once a boostrap framework was used this sped up project styling implementation immensely.
