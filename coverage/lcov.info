@@ -181,9 +181,9 @@ FN:11,barsIndex
 FN:18,barsData
 FN:30,barsCreate
 FNF:3
-FNH:1
+FNH:2
 FNDA:1,barsIndex
-FNDA:0,barsData
+FNDA:1,barsData
 FNDA:0,barsCreate
 DA:1,1
 DA:7,1
@@ -194,10 +194,10 @@ DA:12,1
 DA:13,1
 DA:14,1
 DA:18,1
-DA:19,0
-DA:20,0
-DA:21,0
-DA:23,0
+DA:19,1
+DA:20,1
+DA:21,1
+DA:23,1
 DA:24,0
 DA:25,0
 DA:26,0
@@ -216,7 +216,7 @@ DA:50,0
 DA:52,0
 DA:53,0
 LF:30
-LH:10
+LH:14
 BRDA:13,1,0,0
 BRDA:13,1,1,1
 BRDA:25,2,0,0
