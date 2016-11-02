@@ -35,6 +35,7 @@
     return $.ajax({
       method: "GET",
       url: `${globals.App.api_url}${url}`,
+      beforeSend: globals.App.setRequestHeader.bind(globals.App)
     })
     .done(listBars);
   }
