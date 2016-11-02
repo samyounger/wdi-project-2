@@ -3,7 +3,7 @@
 
   globals.App.init = function(){
     // this.api_url = "http://localhost:3000/api";
-    this.api_url = "http://barpleeze.herokuapp.com/api";
+    this.api_url = "https://barpleeze.herokuapp.com/api";
     this.navigation();
     this.initMap();
     globals.App.initAuth.call(globals.App);
